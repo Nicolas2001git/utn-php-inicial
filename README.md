@@ -1,17 +1,24 @@
 # Calculadora del Zodiaco
 
-Proyecto desarrollado para el Trabajo Práctico Final del curso.  
+Proyecto desarrollado para el Trabajo Práctico Final del curso.
+
 La aplicación está realizada con **HTML5, CSS3, PHP y MySQL**.
+
+---
 
 ## Autor
 
 **Nicolás Riveira**
 
+---
+
 ## Descripción del proyecto
 
-Calculadora del Zodiaco es una aplicación web simple que permite al usuario realizar operaciones matemáticas básicas y consultar su signo zodiacal según el día y el mes ingresados.
+**Calculadora del Zodiaco** es una aplicación web simple que permite al usuario realizar operaciones matemáticas básicas y consultar su signo zodiacal según el día y el mes ingresados.
 
 Además, el proyecto incluye una funcionalidad con método **GET** para mostrar una ficha del usuario y una funcionalidad con método **POST** que guarda los resultados en una base de datos MySQL.
+
+---
 
 ## Funcionalidades principales
 
@@ -22,7 +29,15 @@ Además, el proyecto incluye una funcionalidad con método **GET** para mostrar 
 - Conexión a base de datos MySQL.
 - Registro de resultados en la tabla `resultados`.
 - Uso de estructuras de control `if`, `elseif` y `else`.
-- Uso de funciones del lenguaje como `mysqli_connect`, `mysqli_prepare`, `mysqli_stmt_bind_param`, `mysqli_stmt_execute`, `checkdate` y `htmlspecialchars`.
+- Uso de funciones del lenguaje como:
+  - `mysqli_connect`
+  - `mysqli_prepare`
+  - `mysqli_stmt_bind_param`
+  - `mysqli_stmt_execute`
+  - `checkdate`
+  - `htmlspecialchars`
+
+---
 
 ## Funcionalidad con método GET
 
@@ -40,115 +55,180 @@ Ejemplo de URL generada:
 
 ```txt
 index.php?usuario=Nicolas&color=Azul&hobby=Programar
-Funcionalidad con método POST y base de datos
+```
 
-La sección Calculadora y signo zodiacal utiliza el método POST.
+---
+
+## Funcionalidad con método POST y base de datos
+
+La sección **Calculadora y signo zodiacal** utiliza el método **POST**.
 
 El usuario ingresa:
 
-Nombre
-Número 1
-Número 2
-Mes
-Día
-Operación
+- Nombre
+- Número 1
+- Número 2
+- Mes
+- Día
+- Operación
 
 Las operaciones disponibles son:
 
-Sumar
-Restar
-Multiplicar
-Ver signo
+- Sumar
+- Restar
+- Multiplicar
+- Ver signo
 
 Cuando se envía el formulario, PHP calcula el resultado correspondiente, obtiene el signo zodiacal y guarda la información en la base de datos.
 
-Base de datos
+---
+
+## Base de datos
 
 Nombre de la base de datos:
 
+```txt
 riveira_nicolas
+```
 
 Nombre de la tabla:
 
+```txt
 resultados
+```
 
 Campos principales de la tabla:
 
-id
-nombre
-num1
-num2
-operacion
-resultado
-mes
-dia
-signo
-fecha
+- `id`
+- `nombre`
+- `num1`
+- `num2`
+- `operacion`
+- `resultado`
+- `mes`
+- `dia`
+- `signo`
+- `fecha`
 
 El archivo de base de datos incluido en la entrega es:
 
+```txt
 riveira_nicolas.sql
-Estructura del proyecto
+```
+
+---
+
+## Estructura del proyecto
+
+```txt
 riveira_nicolas/
 ├── index.php
 ├── styles.css
 ├── README.md
 └── riveira_nicolas.sql
-Tecnologías utilizadas
-HTML5
-CSS3
-PHP
-MySQL
-phpMyAdmin
-XAMPP
-Cómo ejecutar el proyecto en local
+```
+
+---
+
+## Tecnologías utilizadas
+
+- HTML5
+- CSS3
+- PHP
+- MySQL
+- phpMyAdmin
+- XAMPP
+
+---
+
+## Cómo ejecutar el proyecto en local
+
+### 1. Copiar la carpeta del proyecto
+
 Copiar la carpeta del proyecto dentro de:
+
+```txt
 C:\xampp\htdocs\
+```
+
 La carpeta debe llamarse:
+
+```txt
 riveira_nicolas
-Abrir XAMPP e iniciar:
-Apache
-MySQL
-Entrar a phpMyAdmin desde el navegador:
+```
+
+---
+
+### 2. Iniciar XAMPP
+
+Abrir XAMPP e iniciar los siguientes servicios:
+
+- Apache
+- MySQL
+
+---
+
+### 3. Entrar a phpMyAdmin
+
+Abrir el navegador e ingresar a:
+
+```txt
 http://localhost/phpmyadmin
+```
+
+---
+
+### 4. Crear o importar la base de datos
+
 Crear o importar la base de datos usando el archivo:
+
+```txt
 riveira_nicolas.sql
-Abrir el proyecto en el navegador:
+```
+
+---
+
+### 5. Abrir el proyecto en el navegador
+
+Ingresar a:
+
+```txt
 http://localhost/riveira_nicolas/
-Configuración de conexión
+```
 
-En el archivo index.php, la conexión local está configurada de la siguiente manera:
+---
 
+## Configuración de conexión
+
+En el archivo `index.php`, la conexión local está configurada de la siguiente manera:
+
+```php
 $host = "localhost";
 $usuarioBD = "root";
 $claveBD = "";
 $nombreBD = "riveira_nicolas";
+```
 
 Esta configuración corresponde al entorno local de XAMPP.
 
-Validaciones implementadas
-El formulario exige completar los campos obligatorios.
-Se valida que la fecha ingresada sea correcta usando checkdate.
-Si se elige una operación matemática, se deben completar los dos números.
-Los datos mostrados en pantalla se protegen con htmlspecialchars.
-Los datos se insertan en la base usando consultas preparadas con mysqli.
-Diseño responsive
+---
 
-El archivo styles.css incluye media queries para adaptar el diseño a diferentes tamaños de pantalla:
+## Validaciones implementadas
 
-Computadoras de escritorio
-Tablets
-Celulares
-Celulares pequeños
-Archivos de entrega
+- El formulario exige completar los campos obligatorios.
+- Se valida que la fecha ingresada sea correcta usando `checkdate`.
+- Si se elige una operación matemática, se deben completar los dos números.
+- Los datos mostrados en pantalla se protegen con `htmlspecialchars`.
+- Los datos se insertan en la base usando consultas preparadas con `mysqli`.
 
-Para la entrega final se incluye:
+---
 
-index.php
-styles.css
-README.md
-riveira_nicolas.sql
+## Diseño responsive
 
-La carpeta comprimida debe llamarse:
+El archivo `styles.css` incluye media queries para adaptar el diseño a diferentes tamaños de pantalla:
 
-riveira_nicolas.zip
+- Computadoras de escritorio
+- Tablets
+- Celulares
+- Celulares pequeños
+
