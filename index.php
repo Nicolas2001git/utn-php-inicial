@@ -13,10 +13,10 @@ const APP = "CALCULADORA DEL ZODIACO";
 define("MENSAJE", "Resultado:");
 
 
-$host = "localhost";
-$usuarioBD = "root";
-$claveBD = "";
-$nombreBD = "riveira_nicolas";
+$host = "sql306.infinityfree.com";
+$usuarioBD = "if0_41615362";
+$claveBD = "2051infinity";
+$nombreBD = "if0_41615362_riveira_nicolas";
 
 $usuarioFicha = $_GET["usuario"] ?? "";
 $colorFicha = $_GET["color"] ?? "";
