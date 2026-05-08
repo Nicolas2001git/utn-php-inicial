@@ -9,14 +9,10 @@
 
 <?php
 
+include "conexion.php";
+
 const APP = "CALCULADORA DEL ZODIACO";
 define("MENSAJE", "Resultado:");
-
-
-$host = "sql306.infinityfree.com";
-$usuarioBD = "if0_41615362";
-$claveBD = "2051infinity";
-$nombreBD = "if0_41615362_riveira_nicolas";
 
 $usuarioFicha = $_GET["usuario"] ?? "";
 $colorFicha = $_GET["color"] ?? "";
@@ -34,10 +30,6 @@ $signo = "";
 $textoOperacion = "";
 $resultado = null;
 
-
-
-
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($nombre === "" || $mes === "" || $dia === "" || $operacion === "") {
@@ -49,7 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (!checkdate($mesNum, $diaNum, 2026)) {
             $mensajeGuardado = "La fecha ingresada no es válida.";
         } else {
-
 
             if (($mesNum == 1 && $diaNum >= 20) || ($mesNum == 2 && $diaNum <= 18)) {
                 $signo = "Acuario";
@@ -77,7 +68,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $signo = "Capricornio";
             }
 
-
             if ($operacion === "sumar" || $operacion === "restar" || $operacion === "multiplicar") {
 
                 if ($num1 === "" || $num2 === "") {
@@ -103,51 +93,41 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $textoOperacion = "Solo signo zodiacal";
             }
 
-
             if ($mensajeGuardado === "") {
-                $conexion = mysqli_connect($host, $usuarioBD, $claveBD, $nombreBD);
 
-                if (!$conexion) {
-                    $mensajeGuardado = "Error de conexión con la base de datos: " . mysqli_connect_error();
-                } else {
-                    mysqli_set_charset($conexion, "utf8");
+                $sql = "INSERT INTO resultados 
+                        (nombre, num1, num2, operacion, resultado, mes, dia, signo) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-                    $sql = "INSERT INTO resultados 
-                            (nombre, num1, num2, operacion, resultado, mes, dia, signo) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                $stmt = mysqli_prepare($conexion, $sql);
 
-                    $stmt = mysqli_prepare($conexion, $sql);
+                if ($stmt) {
+                    $num1BD = ($num1 === "") ? null : (float)$num1;
+                    $num2BD = ($num2 === "") ? null : (float)$num2;
+                    $resultadoBD = ($resultado === null) ? null : (float)$resultado;
 
-                    if ($stmt) {
-                        $num1BD = ($num1 === "") ? null : (float)$num1;
-                        $num2BD = ($num2 === "") ? null : (float)$num2;
-                        $resultadoBD = ($resultado === null) ? null : (float)$resultado;
+                    mysqli_stmt_bind_param(
+                        $stmt,
+                        "sddsdiss",
+                        $nombre,
+                        $num1BD,
+                        $num2BD,
+                        $operacion,
+                        $resultadoBD,
+                        $mesNum,
+                        $diaNum,
+                        $signo
+                    );
 
-                        mysqli_stmt_bind_param(
-                            $stmt,
-                            "sddsdiss",
-                            $nombre,
-                            $num1BD,
-                            $num2BD,
-                            $operacion,
-                            $resultadoBD,
-                            $mesNum,
-                            $diaNum,
-                            $signo
-                        );
-
-                        if (mysqli_stmt_execute($stmt)) {
-                            $mensajeGuardado = "El resultado fue calculado y guardado correctamente en la base de datos.";
-                        } else {
-                            $mensajeGuardado = "Error al guardar los datos: " . mysqli_error($conexion);
-                        }
-
-                        mysqli_stmt_close($stmt);
+                    if (mysqli_stmt_execute($stmt)) {
+                        $mensajeGuardado = "El resultado fue calculado y guardado correctamente en la base de datos.";
                     } else {
-                        $mensajeGuardado = "Error al preparar la consulta SQL: " . mysqli_error($conexion);
+                        $mensajeGuardado = "Error al guardar los datos: " . mysqli_error($conexion);
                     }
 
-                    mysqli_close($conexion);
+                    mysqli_stmt_close($stmt);
+                } else {
+                    $mensajeGuardado = "Error al preparar la consulta SQL: " . mysqli_error($conexion);
                 }
             }
         }
@@ -162,13 +142,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <form method="GET">
         <label>Nombre para la ficha:</label>
-        <input type="text" name="usuario" placeholder="Ej: Nicolás" value="<?php echo htmlspecialchars($usuarioFicha); ?>"required>
+        <input type="text" name="usuario" placeholder="Ej: Nicolás" value="<?php echo htmlspecialchars($usuarioFicha); ?>" required>
 
         <label>Color favorito:</label>
-        <input type="text"  name="color"  placeholder="Ej: Azul" value="<?php echo htmlspecialchars($colorFicha); ?>"required>
+        <input type="text" name="color" placeholder="Ej: Azul" value="<?php echo htmlspecialchars($colorFicha); ?>" required>
 
         <label>Hobby:</label>
-        <input type="text" name="hobby" placeholder="Ej: Programar" value="<?php echo htmlspecialchars($hobbyFicha); ?>"required>
+        <input type="text" name="hobby" placeholder="Ej: Programar" value="<?php echo htmlspecialchars($hobbyFicha); ?>" required>
 
         <button type="submit">Mostrar ficha</button>
     </form>
@@ -192,7 +172,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <input type="text" name="nombre" value="<?php echo htmlspecialchars($nombre); ?>" required>
 
         <label>Número 1:</label>
-        <input type="number" name="num1" step="0.01"   value="<?php echo htmlspecialchars($num1); ?>">
+        <input  type="number" name="num1"  step="0.01" value="<?php echo htmlspecialchars($num1); ?>">
 
         <label>Número 2:</label>
         <input type="number" name="num2" step="0.01" value="<?php echo htmlspecialchars($num2); ?>">
@@ -215,7 +195,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </select>
 
         <label>Día:</label>
-        <input type="number" name="dia" min="1" max="31" value="<?php echo htmlspecialchars($dia); ?>" required>
+        <input 
+            type="number" 
+            name="dia" 
+            min="1" 
+            max="31" 
+            value="<?php echo htmlspecialchars($dia); ?>" 
+            required
+        >
 
         <div class="botones">
             <button type="submit" name="operacion" value="sumar">Sumar</button>
