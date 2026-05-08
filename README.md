@@ -1,6 +1,5 @@
 # Calculadora del Zodiaco
 
-Proyecto desarrollado para el Trabajo Práctico Final del curso.
 
 La aplicación está realizada con **HTML5**, **CSS3**, **PHP** y **MySQL**.
 
